@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>QuantumWell — AI Wellness OS</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #080c10;
+    --surface: #0e1318;
+    --card: #121920;
+    --border: #1e2d3a;
+    --accent: #00e5ff;
+    --accent2: #7fff6e;
+    --accent3: #ff6b6b;
+    --accent4: #ffd166;
+    --text: #e8f1f8;
+    --muted: #5a7a8a;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: var(--bg); color: var(--text); font-family: 'DM Sans', sans-serif; min-height: 100vh; display: flex; flex-direction: column; }
+  .header { padding: 20px 32px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--border); background: rgba(8,12,16,0.9); position: sticky; top: 0; z-index: 50; }
+  .logo { font-family: 'Syne', sans-serif; font-size: 22px; font-weight: 800; color: var(--accent); }
+  .chip { background: rgba(0,229,255,0.08); border: 1px solid rgba(0,229,255,0.2); color: var(--accent); padding: 6px 14px; border-radius: 999px; font-size: 12px; display: flex; align-items: center; gap: 6px; }
+  .dot { width: 6px; height: 6px; background: var(--accent); border-radius: 50%; animation: pulse 2s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+  .content { flex: 1; padding: 28px 32px; display: flex; gap: 20px; }
+  .left { flex: 1; display: flex; flex-direction: column; gap: 16px; }
+  .right { width: 340px; display: flex; flex-direction: column; gap: 16px; }
+  .card { background: var(--card); border: 1px solid var(--border); border-radius: 16px; overflow: hidden; }
+  .card-header { padding: 16px 20px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
+  .card-header h3 { font-family: 'Syne', sans-serif; font-size: 14px; font-weight: 700; }
+  .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+  .stat { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 20px; }
+  .stat .icon { font-size: 22px; margin-bottom: 10px; }
+  .stat .label { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); }
+  .stat .value { font-family: 'Syne', sans-serif; font-size: 24px; font-weight: 700; margin-top: 4px; }
+  .chat-messages { padding: 16px 20px; height: 320px; overflow-y: auto; display: flex; flex-direction: column; gap: 12px; }
+  .msg { max-width: 85%; padding: 12px 16px; border-radius: 12px; font-size: 13px; line-height: 1.6; animation: fadeUp 0.3s ease; }
+  @keyframes fadeUp { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
+  .msg.user { background: rgba(0,229,255,0.1); border: 1px solid rgba(0,229,255,0.2); align-self: flex-end; color: var(--accent); }
+  .msg.ai { background: rgba(18,25,32,0.9); border: 1px solid var(--border); align-self: flex-start; color: var(--text); }
+  .msg.ai .agent-tag { font-size: 10px; color: var(--muted); margin-bottom: 4px; }
+  .chat-input-row { padding: 16px 20px; border-top: 1px solid var(--border); display: flex; gap: 10px; }
+  .chat-input { flex: 1; background: rgba(14,19,24,0.9); border: 1px solid var(--border); border-radius: 10px; padding: 10px 14px; font-size: 13px; color: var(--text); font-family: 'DM Sans', sans-serif; outline: none; transition: border-color 0.2s; }
+  .chat-input:focus { border-color: rgba(0,229,255,0.3); }
+  .chat-input::placeholder { color: var(--muted); }
+  .send-btn { width: 40px; height: 40px; background: var(--accent); border: none; border-radius: 10px; cursor: pointer; font-size: 18px; color: var(--bg); font-weight: 700; transition: opacity 0.2s; }
+  .send-btn:hover { opacity: 0.85; }
+  .send-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+  .quick-btns { padding: 12px 20px; display: flex; flex-wrap: wrap; gap: 8px; border-bottom: 1px solid var(--border); }
+  .qbtn { background: rgba(14,19,24,0.9); border: 1px solid var(--border); color: var(--muted); padding: 6px 12px; border-radius: 999px; font-size: 11px; cursor: pointer; transition: all 0.2s; font-family: 'DM Sans', sans-serif; }
+  .qbtn:hover { border-color: rgba(0,229,255,0.3); color: var(--accent); }
+  .tips { padding: 16px 20px; display: flex; flex-direction: column; gap: 10px; }
+  .tip { padding: 10px 12px; border-radius: 10px; background: rgba(14,19,24,0.8); border: 1px solid var(--border); font-size: 12px; color: var(--muted); line-height: 1.5; }
+  .tip span { color: var(--text); font-weight: 500; }
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 999px; }
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="logo">⚛️ QuantumWell</div>
+  <div class="chip"><span class="dot"></span> Agent Online</div>
+</header>
+
+<div class="content">
+  <div class="left">
+
+    <!-- Stats -->
+    <div class="stats">
+      <div class="stat">
+        <div class="icon">🔥</div>
+        <div class="label">Calories</div>
+        <div class="value" style="color:var(--accent2)" id="cal-stat">0 kcal</div>
+      </div>
+      <div class="stat">
+        <div class="icon">💪</div>
+        <div class="label">Workouts</div>
+        <div class="value" style="color:var(--accent)" id="workout-stat">0</div>
+      </div>
+      <div class="stat">
+        <div class="icon">✅</div>
+        <div class="label">Tasks</div>
+        <div class="value" style="color:var(--accent4)" id="task-stat">0</div>
+      </div>
+      <div class="stat">
+        <div class="icon">🤖</div>
+        <div class="label">Messages</div>
+        <div class="value" style="color:var(--accent3)" id="msg-stat">0</div>
+      </div>
+    </div>
+
+    <!-- Chat -->
+    <div class="card" style="flex:1">
+      <div class="card-header">
+        <h3>💬 Chat with QuantumWell Agent</h3>
+      </div>
+      <div class="quick-btns">
+        <button class="qbtn" onclick="quickSend('I had 2 idlis for breakfast')">🥗 Log Breakfast</button>
+        <button class="qbtn" onclick="quickSend('I ran 3km today')">🏃 Log Run</button>
+        <button class="qbtn" onclick="quickSend('Add task - finish project')">✅ Add Task</button>
+        <button class="qbtn" onclick="quickSend('How was my day?')">📊 Progress</button>
+        <button class="qbtn" onclick="quickSend('Show all my tasks')">📋 View Tasks</button>
+      </div>
+      <div class="chat-messages" id="chat-messages">
+        <div class="msg ai">
+          <div class="agent-tag">🤖 QuantumWell</div>
+          Hey! I'm your AI wellness assistant. Tell me what you ate, your workout, tasks or ask for your progress! 😊
+        </div>
+      </div>
+      <div class="chat-input-row">
+        <input class="chat-input" id="chat-input" placeholder="Try: I had dosa for breakfast..." />
+        <button class="send-btn" id="send-btn" onclick="sendMessage()">↑</button>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Right panel -->
+  <div class="right">
+    <div class="card">
+      <div class="card-header">
+        <h3>💡 Try saying...</h3>
+      </div>
+      <div class="tips">
+        <div class="tip"><span>Diet:</span> "I had rice and dal for lunch"</div>
+        <div class="tip"><span>Workout:</span> "Did 30 mins of yoga"</div>
+        <div class="tip"><span>Tasks:</span> "Add task - prepare PPT"</div>
+        <div class="tip"><span>Tasks:</span> "Mark task done - prepare PPT"</div>
+        <div class="tip"><span>Progress:</span> "How was my week?"</div>
+        <div class="tip"><span>Progress:</span> "Give me a summary"</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <h3>📊 Today's Activity</h3>
+      </div>
+      <div class="tips" id="activity-log">
+        <div class="tip" style="text-align:center; color:var(--muted)">No activity yet. Start chatting! 😊</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const API_URL = '';
+  let msgCount = 0;
+  let calCount = 0;
+  let workoutCount = 0;
+  let taskCount = 0;
+  const activities = [];
+
+  async function sendMessage(text) {
+    const input = document.getElementById('chat-input');
+    const message = text || input.value.trim();
+    if (!message) return;
+
+    input.value = '';
+    addMessage(message, 'user');
+    msgCount++;
+    document.getElementById('msg-stat').textContent = msgCount;
+
+    const btn = document.getElementById('send-btn');
+    btn.disabled = true;
+    btn.textContent = '...';
+
+    try {
+      const res = await fetch(`${API_URL}/chat`, {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({message})
+      });
+      const data = await res.json();
+      addMessage(data.response, 'ai', data.agent_used);
+
+      // Update stats
+      if (data.agent_used && data.agent_used.includes('DIET')) {
+        calCount += 200;
+        document.getElementById('cal-stat').textContent = calCount + ' kcal';
+        addActivity('🥗 Meal logged');
+      } else if (data.agent_used && data.agent_used.includes('WORKOUT')) {
+        workoutCount++;
+        document.getElementById('workout-stat').textContent = workoutCount;
+        addActivity('💪 Workout logged');
+      } else if (data.agent_used && data.agent_used.includes('TASK')) {
+        taskCount++;
+        document.getElementById('task-stat').textContent = taskCount;
+        addActivity('✅ Task updated');
+      }
+
+    } catch (err) {
+      addMessage('Sorry, could not reach the server. Make sure the backend is running! 😊', 'ai');
+    }
+
+    btn.disabled = false;
+    btn.textContent = '↑';
+  }
+
+  function addMessage(text, type, agent) {
+    const box = document.getElementById('chat-messages');
+    const div = document.createElement('div');
+    div.className = `msg ${type}`;
+    if (type === 'ai') {
+      const tag = agent ? `<div class="agent-tag">🤖 ${agent.replace('_', ' ')}</div>` : '<div class="agent-tag">🤖 QuantumWell</div>';
+      div.innerHTML = tag + text;
+    } else {
+      div.textContent = text;
+    }
+    box.appendChild(div);
+    box.scrollTop = box.scrollHeight;
+  }
+
+  function addActivity(text) {
+    const log = document.getElementById('activity-log');
+    if (log.querySelector('.tip[style]')) log.innerHTML = '';
+    const div = document.createElement('div');
+    div.className = 'tip';
+    div.innerHTML = `<span>${text}</span> — just now`;
+    log.appendChild(div);
+  }
+
+  function quickSend(text) {
+    sendMessage(text);
+  }
+
+  document.getElementById('chat-input').addEventListener('keydown', e => {
+    if (e.key === 'Enter') sendMessage();
+  });
+</script>
+</body>
+</html>

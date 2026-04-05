@@ -1,0 +1,5 @@
+fastapi
+uvicorn
+aiofiles
+google-genai
+google-cloud-aiplatform
