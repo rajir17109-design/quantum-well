@@ -204,7 +204,7 @@ We're a team passionate about making AI genuinely useful in everyday wellness an
  
 | Name | Role | GitHub |
 |---|---|---|
-|🧑‍💻 **Amaresh Pal** | Team Member | [@amaresh-pal](https://github.com/amaresh-pal) ) |
+|🧑‍💻 **Amaresh Pal** | Team Member | [@amaresh-pal](https://github.com/amaresh-pal)  |
 | 🧑‍💻 **Noah Tatpi** | Team Member | [@Noahtatpati](https://github.com/Noahtatpati) |
 | 🧑‍💻 **Rajeshwari R** | Team Member | [@rajir17109-design](https://github.com/rajir17109-design) |
  
