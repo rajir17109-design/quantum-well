@@ -160,11 +160,11 @@ Open your browser at `http://localhost:8080`
 
 ```bash
 # Build and push the container
-gcloud builds submit --tag gcr.io/YOUR_PROJECT_ID/quantum-well
+gcloud builds submit --tag gcr.io/career-advisor-491804/quantum-well
 
 # Deploy to Cloud Run
 gcloud run deploy quantum-well \
-  --image gcr.io/YOUR_PROJECT_ID/quantum-well \
+  --image gcr.io/career-advisor-491804/quantum-well \
   --platform managed \
   --region asia-southeast1 \
   --allow-unauthenticated
