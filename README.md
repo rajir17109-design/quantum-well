@@ -210,6 +210,4 @@ We're a team passionate about making AI genuinely useful in everyday wellness an
  
 
 
-<div align="center">
-  <sub>Made with ☕ and a lot of Gemini prompts by Team Quantum Coders 🚀</sub>
-</div>
+
